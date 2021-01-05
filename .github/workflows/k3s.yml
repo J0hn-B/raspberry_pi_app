@@ -17,4 +17,5 @@ jobs:
       - name: example tests
         run: |
           kubectl cluster-info
+          kubectl create namespace drupal
           kubectl apply -f app/
