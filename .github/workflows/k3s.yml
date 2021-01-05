@@ -17,3 +17,4 @@ jobs:
       - name: example tests
         run: |
           kubectl cluster-info
+          kubectl apply -f ../../app/
