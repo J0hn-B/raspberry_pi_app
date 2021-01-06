@@ -4,16 +4,16 @@ on: [push]
 
 jobs:
   build:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest # [self-hosted, linux, x64]
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
-      # - name: install k3s
-      #   run: |
-      #     curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE=777 sh -
-      #     cat /etc/rancher/k3s/k3s.yaml
-      #     mkdir -p ~/.kube
-      #     cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+      - name: install k3s
+        run: |
+          curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE=777 sh -
+          cat /etc/rancher/k3s/k3s.yaml
+          mkdir -p ~/.kube
+          cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
       - name: Deploy app
         run: |
           kubectl cluster-info
