@@ -3,5 +3,5 @@ kind: Runner
 metadata:
   name: kubernetes-runner
 spec:
-  repository: J0hn-B/raspberry_pi_app
+  repository: J0hn-B/raspberry_pi_app/app
   env: []
