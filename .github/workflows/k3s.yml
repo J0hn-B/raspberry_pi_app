@@ -21,6 +21,7 @@ jobs:
           kubectl apply -f app/
 
   deploy:
+    needs: build
     runs-on: [self-hosted, linux, x64]
     timeout-minutes: 5
     steps:
