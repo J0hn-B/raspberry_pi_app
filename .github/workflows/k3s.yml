@@ -26,11 +26,3 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
-        with:
-          repository: J0hn-B/raspberry_pi_app
-          path: master
-      - name: Deploy app
-        run: |
-          kubectl cluster-info
-          kubectl create namespace drupal
-          kubectl apply -f app/
