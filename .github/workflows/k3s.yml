@@ -14,8 +14,13 @@ jobs:
           cat /etc/rancher/k3s/k3s.yaml
           mkdir -p ~/.kube
           cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-      - name: Deploy app
+      - name: Deploy drupal
         run: |
           kubectl cluster-info
           kubectl create namespace drupal
           kubectl apply -f app/
+
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+          helm --help
