@@ -1,0 +1,21 @@
+name: Test with K3d
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # [self-hosted, linux, x64]
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: install k3d
+        run: |
+          wget -q -O - https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
+          k3d cluster create mycluster
+          kubectl get nodes
+
+      - name: Deploy drupal
+        run: |
+          kubectl cluster-info
+          kubectl create namespace drupal
+          kubectl apply -f app/

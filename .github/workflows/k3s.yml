@@ -1,43 +1,43 @@
-name: Test with K3s
+# name: Test with K3s
 
-on: [push]
+# on: [push]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest # [self-hosted, linux, x64]
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v2
-      - name: install k3s
-        run: |
-          curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE=777 sh -
-          cat /etc/rancher/k3s/k3s.yaml
-          mkdir -p ~/.kube
-          cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-      - name: Deploy drupal
-        run: |
-          kubectl cluster-info
-          kubectl create namespace drupal
-          kubectl apply -f app/
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest # [self-hosted, linux, x64]
+#     timeout-minutes: 5
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: install k3s
+#         run: |
+#           curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE=777 sh -
+#           cat /etc/rancher/k3s/k3s.yaml
+#           mkdir -p ~/.kube
+#           cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+#       - name: Deploy drupal
+#         run: |
+#           kubectl cluster-info
+#           kubectl create namespace drupal
+#           kubectl apply -f app/
 
-      - name: Install Helm
-        run: |
-          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+#       - name: Install Helm
+#         run: |
+#           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-      - name: Create OpenFaaS namespaces
-        run: |
-          kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
-          kubectl get namespaces
+#       - name: Create OpenFaaS namespaces
+#         run: |
+#           kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+#           kubectl get namespaces
 
-      - name: Add the OpenFaaS helm chart
-        run: |
-          helm repo add openfaas https://openfaas.github.io/faas-netes/
+#       - name: Add the OpenFaaS helm chart
+#         run: |
+#           helm repo add openfaas https://openfaas.github.io/faas-netes/
 
-      - name: Deploy OpenFaaS from the helm chart
-        run: |
-          helm repo update \
-            & helm upgrade openfaas --install openfaas/openfaas \
-              --namespace openfaas  \
-              --set functionNamespace=openfaas-fn \
-              --set generateBasicAuth=true \
-              --set openfaasPRO=false
+#       - name: Deploy OpenFaaS from the helm chart
+#         run: |
+#           helm repo update \
+#             & helm upgrade openfaas --install openfaas/openfaas \
+#               --namespace openfaas  \
+#               --set functionNamespace=openfaas-fn \
+#               --set generateBasicAuth=true \
+#               --set openfaasPRO=false
