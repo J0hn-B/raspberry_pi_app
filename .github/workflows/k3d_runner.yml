@@ -9,6 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Make scripts executable
+        run: find scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
+
       - name: Prerare the devolpment environment
         run: scripts/dev_env.sh
         shell: bash
