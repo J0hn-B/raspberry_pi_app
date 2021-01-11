@@ -2,8 +2,20 @@
 
 # Parameters
 CLUSTER=$(k3d cluster list | grep dev-cluster)
+KUBECTL_VERSION=$(kubectl version)
 
-# Prepare the cluster
+# Install Kubectl
+if [ "$KUBECTL_VERSION" ]; then
+    echo "Kubectl is installed"
+else
+    echo "Kubectl is missing"
+    curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x ./kubectl
+    mv ./kubectl /usr/local/bin/kubectl
+    kubectl version --client
+fi
+
+# Prepare the k3d cluster
 if [ "$CLUSTER" ]; then
     echo "Cluster exists"
 else
@@ -12,3 +24,9 @@ else
     k3d cluster create dev-cluster --agents 2
     k3d kubeconfig merge dev-cluster --switch-context
 fi
+
+# Create OpenFaaS namespaces
+kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
+kubectl get namespaces
+
+#
