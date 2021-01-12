@@ -3,6 +3,7 @@
 # Parameters
 CLUSTER=$(k3d cluster list | grep dev-cluster)
 KUBECTL_VERSION=$(kubectl version)
+HELM_VERSION=$(helm version)
 
 # Install Kubectl
 if [ "$KUBECTL_VERSION" ]; then
@@ -15,6 +16,17 @@ else
     kubectl version --client
 fi
 
+# Install Helm
+if [ "$HELM_VERSION" ]; then
+    echo "Helm is installed"
+else
+    echo "Helm is missing"
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+
+fi
+
 # Prepare the k3d cluster
 if [ "$CLUSTER" ]; then
     echo "Cluster exists"
@@ -24,9 +36,3 @@ else
     k3d cluster create dev-cluster --agents 2
     k3d kubeconfig merge dev-cluster --switch-context
 fi
-
-# Create OpenFaaS namespaces
-kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml
-kubectl get namespaces
-
-#

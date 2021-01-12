@@ -9,14 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # - name: Check kubectl
-      #   id: check-kubectl
-      #   run: |
-      #     if [ "kubectl version" != 0 ]; then
-      #       curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-      #       chmod +x ./kubectl
-      #       mv ./kubectl /usr/local/bin/kubectl
-      #     fi
+      - name: Check kubectl
+        id: check-kubectl
+        run: |
+          if [ "kubectl version" != 0 ]; then
+            curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x ./kubectl
+            mv ./kubectl /usr/local/bin/kubectl
+          fi
 
       - name: Install k3d
         run: |
@@ -28,9 +28,9 @@ jobs:
           kubectl cluster-info
           kubectl create namespace drupal
           kubectl apply -f app/
-      # - name: Install Helm
-      #   run: |
-      #     curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
       - name: Create OpenFaaS namespaces
         run: |
           kubectl apply -f https://raw.githubusercontent.com/openfaas/faas-netes/master/namespaces.yml

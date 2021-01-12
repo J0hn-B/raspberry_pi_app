@@ -12,6 +12,6 @@ jobs:
       - name: Make scripts executable
         run: find scripts/ -type f -iname "*.sh" -exec chmod +x {} \;
 
-      - name: Prerare the devolpment environment
-        run: scripts/dev_env.sh
+      - name: Prerare the K3d development environment
+        run: scripts/k3d_cluster.sh
         shell: bash
